@@ -38,10 +38,10 @@ def main():
     bb_img.set_colorkey((0, 0, 0,))
     x, y = random.randint(0, 1000), random.randint(0, 800)
     vx, vy = +1, +1
-    bb_rect = bb_img.get_rect()
-    bb_rect.center = (x, y)
-    kk_rect = kk_img.get_rect()
-    kk_rect.center = (900, 400)
+    bb_rct = bb_img.get_rect()
+    bb_rct.center = (x, y)
+    kk_rct = kk_img.get_rect()
+    kk_rct.center = (900, 400)
     
     while True:
         for event in pg.event.get():
@@ -53,22 +53,24 @@ def main():
         key_lst = pg.key.get_pressed()
         for k, mv in delta.items():
             if key_lst[k]:
-                kk_rect.move_ip(mv)
+                kk_rct.move_ip(mv)
                 
-        if check_bound(screen.get_rect(), kk_rect) != (True, True): 
+        if check_bound(screen.get_rect(), kk_rct) != (True, True): 
             for k, mv in delta.items():
                 if key_lst[k]:
-                    kk_rect.move_ip(-mv[0], -mv[1])
+                    kk_rct.move_ip(-mv[0], -mv[1])
         
         screen.blit(bg_img, [0, 0])
-        screen.blit(kk_img, kk_rect)
-        bb_rect.move_ip(vx, vy)
-        yoko, tate = check_bound(screen.get_rect(),bb_rect)
+        screen.blit(kk_img, kk_rct)
+        bb_rct.move_ip(vx, vy)
+        yoko, tate = check_bound(screen.get_rect(),bb_rct)
         if not yoko:
             vx *= -1
         if not tate:
             vy *= -1
-        screen.blit(bb_img, bb_rect)
+        screen.blit(bb_img, bb_rct)
+        if kk_rct.colliderect(bb_rct):
+            return
         pg.display.update()
         clock.tick(100)
         
