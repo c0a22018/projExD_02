@@ -8,6 +8,20 @@ delta = {
         pg.K_UP: (0, -1), pg.K_DOWN: (0, +1), pg.K_LEFT: (-1, 0) ,pg.K_RIGHT: (+1, 0)
         }
 
+kk_img = pg.image.load("ex02/fig/3.png")
+direction = {
+            (-1,0): pg.transform.rotozoom(kk_img, 0, 1.0), (-1,-1): pg.transform.rotozoom(kk_img, -45, 1.0), (0,-1): pg.transform.rotozoom(kk_img, -90, 1.0),
+            (+1,-1): pg.transform.rotozoom(kk_img, -135, 1.0),(+1,0): pg.transform.rotozoom(kk_img, -180, 1.0), (+1,+1): pg.transform.rotozoom(kk_img, 135, 1.0),
+            (0,+1): pg.transform.rotozoom(kk_img, 90, 1.0), (-1,+1): pg.transform.rotozoom(kk_img, 45, 1.0)
+             }
+
+accs = [a for a in range(1, 11)]
+bb_imgs = []
+for r in range(1, 11):
+    bb_img = pg.Surface((20*r, 20*r))
+    pg.draw.circle(bb_img, (255,0,0),(10*r,10*r), 10*r)
+    bb_imgs.append(bb_img)
+    
 def check_bound(scr_rct: pg.Rect, obj_rct: pg.Rect):
     """
     オブジェクトが画面内か画面がいを判定し、真理値タプルを返す関数
@@ -31,6 +45,7 @@ def main():
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
+    kk_img7 = pg.image.load("ex02/fig/7.png")
     tmr = 0
 
     bb_img = pg.Surface((20, 20))
@@ -55,6 +70,10 @@ def main():
             if key_lst[k]:
                 kk_rct.move_ip(mv)
                 
+        avx, avy = vx*accs[min(tmr//1000, 9)], vy*accs[min(tmr//1000, 9)] 
+        bb_img = bb_imgs[min(tmr//1000,9)]       
+        bb_img.set_colorkey((0, 0, 0))
+                
         if check_bound(screen.get_rect(), kk_rct) != (True, True): 
             for k, mv in delta.items():
                 if key_lst[k]:
@@ -70,9 +89,11 @@ def main():
             vy *= -1
         screen.blit(bb_img, bb_rct)
         if kk_rct.colliderect(bb_rct):
+            screen.blit(kk_img7,kk_rct)
             return
+        
         pg.display.update()
-        clock.tick(100)
+        clock.tick(1000)
         
         
 if __name__ == "__main__":
