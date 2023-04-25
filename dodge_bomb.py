@@ -3,9 +3,14 @@ import random
 
 import pygame as pg
 
+
+delta = {
+        pg.K_UP: (0, -1), pg.K_DOWN: (0, +1), pg.K_LEFT: (-1, 0) ,pg.K_RIGHT: (+1, 0)
+        }
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
-    screen = pg.display.set_mode((1000, 600))
+    screen = pg.display.set_mode((1200, 600))
     clock = pg.time.Clock()
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("ex02/fig/3.png")
@@ -19,6 +24,8 @@ def main():
     vx, vy = +1, +1
     bb_rect = bb_img.get_rect()
     bb_rect.center = (x, y)
+    kk_rect = kk_img.get_rect()
+    kk_rect.center = (900, 400)
     
     while True:
         for event in pg.event.get():
@@ -26,12 +33,22 @@ def main():
                 return 0
 
         tmr += 1
+        
+        key_lst = pg.key.get_pressed()
+        for k, mv in delta.items():
+            if key_lst[k]:
+                kk_rect.move_ip(mv)
+                
+        
+        
+        
         screen.blit(bg_img, [0, 0])
-        screen.blit(kk_img, [900, 400])
+        screen.blit(kk_img, kk_rect)
         bb_rect.move_ip(vx, vy)
         screen.blit(bb_img, bb_rect)
         pg.display.update()
         clock.tick(100)
+        
         
 if __name__ == "__main__":
     pg.init()
