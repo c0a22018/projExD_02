@@ -36,7 +36,7 @@ def check_bound(scr_rct: pg.Rect, obj_rct: pg.Rect):
         tate = False
     return yoko, tate
 
-
+    
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -46,12 +46,13 @@ def main():
     kk_img = pg.image.load("ex02/fig/3.png")
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     kk_img7 = pg.image.load("ex02/fig/7.png")
+    kk_img7 = pg.transform.rotozoom(kk_img7, 0, 4.0)
     tmr = 0
 
     bb_img = pg.Surface((20, 20))
     pg.draw.circle(bb_img, (255, 0, 0), (10, 10), 10)
     bb_img.set_colorkey((0, 0, 0,))
-    x, y = random.randint(0, 1000), random.randint(0, 800)
+    x, y = random.randint(0, 800), random.randint(0, 600)
     vx, vy = +1, +1
     bb_rct = bb_img.get_rect()
     bb_rct.center = (x, y)
@@ -90,6 +91,10 @@ def main():
         screen.blit(bb_img, bb_rct)
         if kk_rct.colliderect(bb_rct):
             screen.blit(kk_img7,kk_rct)
+            pg.display.update()
+            
+            for i in range(10000):
+                screen.blit(kk_img7,kk_rct)
             return
         
         pg.display.update()
