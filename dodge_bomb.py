@@ -8,6 +8,22 @@ delta = {
         pg.K_UP: (0, -1), pg.K_DOWN: (0, +1), pg.K_LEFT: (-1, 0) ,pg.K_RIGHT: (+1, 0)
         }
 
+def check_bound(scr_rct: pg.Rect, obj_rct: pg.Rect):
+    """
+    オブジェクトが画面内か画面がいを判定し、真理値タプルを返す関数
+    引数１：画面surfaceのrect
+        ２；効果トンまたは爆弾surfaceのrect
+        戻り値：横方向縦方向のはみだし判定結果　（画面内：True画面外：False）
+    """
+    yoko, tate = True, True
+    if obj_rct.left < scr_rct.left or scr_rct.right < obj_rct.right:
+        yoko = False
+    if obj_rct.top < scr_rct.top or scr_rct.bottom < obj_rct.bottom:
+        tate = False
+    return yoko, tate
+
+
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((1200, 600))
@@ -39,12 +55,19 @@ def main():
             if key_lst[k]:
                 kk_rect.move_ip(mv)
                 
-        
-        
+        if check_bound(screen.get_rect(), kk_rect) != (True, True): 
+            for k, mv in delta.items():
+                if key_lst[k]:
+                    kk_rect.move_ip(-mv[0], -mv[1])
         
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, kk_rect)
         bb_rect.move_ip(vx, vy)
+        yoko, tate = check_bound(screen.get_rect(),bb_rect)
+        if not yoko:
+            vx *= -1
+        if not tate:
+            vy *= -1
         screen.blit(bb_img, bb_rect)
         pg.display.update()
         clock.tick(100)
