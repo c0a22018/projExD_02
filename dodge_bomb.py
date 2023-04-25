@@ -90,10 +90,13 @@ def main():
             vy *= -1
         screen.blit(bb_img, bb_rct)
         if kk_rct.colliderect(bb_rct):
+            
+            screen.blit(bg_img, [0, 0])
             screen.blit(kk_img7,kk_rct)
+            
             pg.display.update()
             
-            for i in range(10000):
+            for i in range(5000):
                 screen.blit(kk_img7,kk_rct)
             return
         
