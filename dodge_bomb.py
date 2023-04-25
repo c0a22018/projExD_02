@@ -53,6 +53,7 @@ def main():
     pg.draw.circle(bb_img, (255, 0, 0), (10, 10), 10)
     bb_img.set_colorkey((0, 0, 0,))
     x, y = random.randint(0, 800), random.randint(0, 600)
+    
     vx, vy = +1, +1
     bb_rct = bb_img.get_rect()
     bb_rct.center = (x, y)
@@ -82,6 +83,11 @@ def main():
         
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, kk_rct)
+        
+       # t = kk_rct[0] - bb_rct[0]
+        #(kk_rct[1] - bb_rct[1]) 
+        #vx,vy = 
+        #print(vx,vy)
         bb_rct.move_ip(vx, vy)
         yoko, tate = check_bound(screen.get_rect(),bb_rct)
         if not yoko:
@@ -96,10 +102,13 @@ def main():
             
             pg.display.update()
             
-            for i in range(5000):
+            for i in range(15):
                 screen.blit(kk_img7,kk_rct)
+                kk_img7 = pg.transform.rotozoom(kk_img7, 20, 1.0)
+                pg.display.update()
             return
-        
+         
+
         pg.display.update()
         clock.tick(1000)
         
